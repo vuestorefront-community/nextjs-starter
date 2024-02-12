@@ -6,7 +6,7 @@ const cors = require('cors');
 (async () => {
   const app = await createServer({ integrations });
   // By default it's running on the localhost.
-  const host = process.argv[2] ?? '0.0.0.0';
+  const host = process.argv[2] ?? 'localhost';
   // By default it's running on the port 8181.
   const port = process.argv[3] ?? 8181;
   const CORS_MIDDLEWARE_NAME = 'corsMiddleware';
