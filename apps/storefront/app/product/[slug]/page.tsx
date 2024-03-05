@@ -1,7 +1,6 @@
-"use client"
-import ProductGallery from "../components/ProductGallery";
-import ProductDetails from "../components/ProductDetails";
-import ProductSlider from "../components/ProductSlider";
+import ProductGallery from "../../../components/ProductGallery";
+import ProductDetails from "../../../components/ProductDetails";
+import ProductSlider from "../../../components/ProductSlider";
 
 export default function Page() {
   return (
