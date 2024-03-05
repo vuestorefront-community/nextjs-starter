@@ -20,5 +20,8 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@vsf-enterprise/sap-commerce-webservices-sdk": "^4.0.0"
+  }
 }
