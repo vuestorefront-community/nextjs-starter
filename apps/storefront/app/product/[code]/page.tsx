@@ -10,8 +10,6 @@ export default async function Page({ params }: { params: { code: string } }) {
     id: params.code,
   });
 
-  console.log(product);
-
   return (
     <div
       className="flex flex-col gap-8 md:gap-12 lg:gap-16 max-w-screen-xl m-auto px-4 md:px-8 lg:px-12 xl:px-16 py-8 md:py-12 lg:py-16 xl:py-20"
