@@ -15,7 +15,7 @@ export default function NavBar() {
 
       <SfButton className="relative" square variant="tertiary">
         <SfIconShoppingCart className="text-white" />
-        <SfBadge content={cart.totalUnitCount} />
+        <SfBadge content={cart.totalItems} />
       </SfButton>
     </div>
   )

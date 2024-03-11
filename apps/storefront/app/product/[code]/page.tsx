@@ -6,7 +6,7 @@ import { getSdk } from "../../../sdk/sdk.config";
 export default async function Page({ params }: { params: { code: string } }) {
   const sdk = getSdk();
 
-  const product = await sdk.sapcc.getProduct({
+  const { product } = await sdk.unified.getProductDetails({
     id: params.code,
   });
 
@@ -17,7 +17,7 @@ export default async function Page({ params }: { params: { code: string } }) {
       <section
         className="flex flex-col items-start gap-8 md:flex-row md:gap-4 xl:gap-6"
       >
-        <ProductGallery images={product.images} />
+        <ProductGallery images={product.gallery} />
         <ProductDetails product={product} />
       </section>
       <ProductSlider />

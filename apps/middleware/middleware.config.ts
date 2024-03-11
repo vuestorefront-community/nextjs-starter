@@ -1,7 +1,21 @@
 require('dotenv').config();
+import {
+  Config,
+  Context,
+  createUnifiedExtension,
+  methods,
+  normalizers
+} from "@vsf-enterprise/unified-api-sapcc";
+import { ApiClientExtension } from "@vue-storefront/middleware";
+
+const apiMethods = methods<typeof normalizers>();
+const unifiedApiExtension = createUnifiedExtension<Context, Config>()({
+  normalizers,
+  apiMethods
+});
 
 export const integrations = {
-  sapcc: {
+  commerce: {
     location: '@vsf-enterprise/sapcc-api/server',
     configuration: {
       OAuth: {
@@ -22,6 +36,9 @@ export const integrations = {
         defaultLanguage: process.env.DEFAULT_LANGUAGE,
         defaultCurrency: process.env.DEFAULT_CURRENCY
       }
-    }
+    },
+    extensions: (extensions: ApiClientExtension[]) => [...extensions, unifiedApiExtension]
   }
 };
+
+export type UnifiedApiExtension = typeof unifiedApiExtension;

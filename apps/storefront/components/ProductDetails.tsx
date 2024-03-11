@@ -18,18 +18,18 @@ import {
 import { useCounter } from 'react-use';
 import { useId, ChangeEvent } from 'react';
 import { clamp } from '@storefront-ui/shared';
-import { Product } from '@vsf-enterprise/sap-commerce-webservices-sdk';
 import useCart from '../hooks/useCart';
+import { SfProduct } from '../types/product';
 
 interface ProductDetailsProps {
-  product: Product;
+  product: SfProduct;
 }
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
   const inputId = useId();
   const { addToCart } = useCart();
   const min = 1;
-  const max = product.stock?.stockLevel ?? 1;
+  const max = product.quantityLimit ?? 1;
   const [value, { inc, dec, set }] = useCounter(min);
   function handleOnChange(event: ChangeEvent<HTMLInputElement>) {
     const { value: currentValue } = event.target;
@@ -46,18 +46,18 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
       <h1 className="mb-1 font-bold typography-headline-4">
         {product.name}
       </h1>
-      <strong className="block font-bold typography-headline-3">{product.price?.currencyIso} {product.price?.value}</strong>
+      <strong className="block font-bold typography-headline-3">{product.price?.regularPrice.currency} {product.price?.regularPrice.amount}</strong>
       <div className="inline-flex items-center mt-4 mb-2">
         <SfRating size="xs" value={3} max={5} />
         <SfCounter className="ml-1" size="xs">
-          {product.numberOfReviews}
+          {product.rating?.count}
         </SfCounter>
         <SfLink href="#" variant="secondary" className="ml-2 text-xs text-neutral-500">
-          {product.numberOfReviews} reviews
+          {product.rating?.count} reviews
         </SfLink>
       </div>
       <p className="mb-4 font-normal typography-text-sm"
-        dangerouslySetInnerHTML={{ __html: product.summary }}
+        dangerouslySetInnerHTML={{ __html: product.description! }}
       />
       <div className="py-4 mb-4 border-gray-200 border-y">
         <div className="bg-primary-100 text-primary-700 flex justify-center gap-1.5 py-1.5 typography-text-sm items-center mb-4 rounded-md">
