@@ -1,5 +1,5 @@
-import { sapccModule } from '@vsf-enterprise/sapcc-sdk';
 import { CreateSdkOptions, createSdk } from "@vue-storefront/next";
+import { Endpoints } from "@vsf-enterprise/sapcc-api";
 
 const options: CreateSdkOptions = {
   middleware: {
@@ -9,11 +9,9 @@ const options: CreateSdkOptions = {
 
 export const { getSdk } = createSdk(
   options,
-  ({ buildModule, middlewareUrl, getRequestHeaders }) => ({
-    sapcc: buildModule(sapccModule, {
+  ({ buildModule, middlewareUrl, middlewareModule, getRequestHeaders }) => ({
+    sapcc: buildModule(middlewareModule<Endpoints>, {
       apiUrl: middlewareUrl + "/sapcc",
     }),
   }),
 );
-
-
