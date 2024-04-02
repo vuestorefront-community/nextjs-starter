@@ -12,6 +12,9 @@ export const { getSdk } = createSdk(
   ({ buildModule, middlewareUrl, middlewareModule, getRequestHeaders }) => ({
     sapcc: buildModule(middlewareModule<Endpoints>, {
       apiUrl: middlewareUrl + "/sapcc",
+      defaultRequestConfig: {
+        headers: getRequestHeaders(),
+      },
     }),
   }),
 );
