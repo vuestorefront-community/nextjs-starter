@@ -1,6 +1,5 @@
-import { unifiedModule } from '@vsf-enterprise/unified-sdk';
 import { CreateSdkOptions, createSdk } from "@vue-storefront/next";
-import { UnifiedApiExtension } from '../../middleware/middleware.config';
+import { Endpoints } from "@vsf-enterprise/sapcc-api";
 
 const options: CreateSdkOptions = {
   middleware: {
@@ -10,14 +9,12 @@ const options: CreateSdkOptions = {
 
 export const { getSdk } = createSdk(
   options,
-  ({ buildModule, middlewareUrl, getRequestHeaders }) => ({
-    unified: buildModule(unifiedModule<UnifiedApiExtension>, {
-      apiUrl: middlewareUrl + "/commerce",
-      requestOptions: {
-        headers: () => getRequestHeaders() as Record<string, string>,
+  ({ buildModule, middlewareUrl, middlewareModule, getRequestHeaders }) => ({
+    sapcc: buildModule(middlewareModule<Endpoints>, {
+      apiUrl: middlewareUrl + "/sapcc",
+      defaultRequestConfig: {
+        headers: getRequestHeaders(),
       },
     }),
   }),
 );
-
-
