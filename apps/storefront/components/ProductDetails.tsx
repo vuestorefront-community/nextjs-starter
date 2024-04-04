@@ -57,7 +57,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         </SfLink>
       </div>
       <p className="mb-4 font-normal typography-text-sm"
-        dangerouslySetInnerHTML={{ __html: product.summary }}
+        dangerouslySetInnerHTML={{ __html: product.summary ?? '' }}
       />
       <div className="py-4 mb-4 border-gray-200 border-y">
         <div className="bg-primary-100 text-primary-700 flex justify-center gap-1.5 py-1.5 typography-text-sm items-center mb-4 rounded-md">
