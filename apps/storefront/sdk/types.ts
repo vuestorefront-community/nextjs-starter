@@ -1,7 +1,5 @@
-import { InferSdkMethodReturn } from '@vsf-enterprise/unified-sdk';
-import { UnifiedApiExtension } from '../../middleware/middleware.config';
+import { UnifiedEndpoints } from 'middleware/types';
 
-export type InferSdk<TName extends keyof UnifiedApiExtension['extendApiMethods']> = InferSdkMethodReturn<
-  UnifiedApiExtension,
-  TName
->;
+export type InferSdk<TName extends keyof UnifiedEndpoints> = Awaited<ReturnType<UnifiedEndpoints[TName]>>;
+
+export type InferSdkArgs<TName extends keyof UnifiedEndpoints> = Parameters<UnifiedEndpoints[TName]>[0];

@@ -1,5 +1,5 @@
 import { CreateSdkOptions, createSdk } from "@vue-storefront/next";
-import { Endpoints } from "@vsf-enterprise/sapcc-api";
+import type { UnifiedEndpoints } from 'middleware/types';
 
 const options: CreateSdkOptions = {
   middleware: {
@@ -7,14 +7,14 @@ const options: CreateSdkOptions = {
   }
 };
 
-export const { getSdk } = createSdk(
-  options,
-  ({ buildModule, middlewareUrl, middlewareModule, getRequestHeaders }) => ({
-    sapcc: buildModule(middlewareModule<Endpoints>, {
-      apiUrl: middlewareUrl + "/sapcc",
+export const { getSdk } = createSdk(options,
+  ({ buildModule, middlewareModule, middlewareUrl, getRequestHeaders }) => ({
+    unified: buildModule(middlewareModule<UnifiedEndpoints>, {
+      apiUrl: `${middlewareUrl}/commerce`,
       defaultRequestConfig: {
         headers: getRequestHeaders(),
       },
     }),
-  }),
-);
+  }));
+
+export type Sdk = ReturnType<typeof getSdk>;

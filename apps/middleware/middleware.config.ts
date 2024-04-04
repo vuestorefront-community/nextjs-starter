@@ -9,9 +9,15 @@ import {
 import { ApiClientExtension } from "@vue-storefront/middleware";
 
 const apiMethods = methods<typeof normalizers>();
-const unifiedApiExtension = createUnifiedExtension<Context, Config>()({
+export const unifiedApiExtension = createUnifiedExtension<Context, Config>()({
   normalizers,
-  apiMethods
+  apiMethods,
+  config: {
+    transformImageUrl: (url: string) => {
+      return new URL(url, process.env.SAPCC_BASE_URL).toString();
+    },
+    defaultCurrency: "USD",
+  }
 });
 
 export const integrations = {
@@ -40,5 +46,3 @@ export const integrations = {
     extensions: (extensions: ApiClientExtension[]) => [...extensions, unifiedApiExtension]
   }
 };
-
-export type UnifiedApiExtension = typeof unifiedApiExtension;
