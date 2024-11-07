@@ -1,11 +1,18 @@
-import { getSdk } from "../sdk/sdk.config"
+import { getSdk } from "@/sdk/sdk";
 
 const sdk = getSdk();
 
 export default async function Page() {
-  const { products } = await sdk.sapcc.searchProduct({});
+  const {
+    data: { products },
+  } = await sdk.sapcc.getProducts({});
 
-  console.log(products?.map((product) => product.name));
-
-  return <div>Page</div>
+  return (
+    <div>
+      Product List:
+      <ul>
+        {products?.map((product) => <li key={product.code}>{product.name}</li>)}
+      </ul>
+    </div>
+  );
 }
