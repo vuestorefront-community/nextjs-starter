@@ -18,3 +18,5 @@ export const { getSdk } = createSdk(
     }),
   })
 );
+
+export type Sdk = ReturnType<typeof getSdk>;

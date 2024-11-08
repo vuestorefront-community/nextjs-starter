@@ -1,30 +1,43 @@
 "use client";
 
+import { useSdk } from "@/hooks/useSdk";
 import { Cart } from "@vsf-enterprise/sap-commerce-webservices-sdk";
 import { createContext, useEffect, useState } from "react";
-import { useSdk } from "../sdk/sdk";
 
 export const CartContext = createContext<{
   cart: Cart;
   updateCart: (cart: Cart) => void;
 }>({
   cart: {} as Cart,
-  updateCart: () => { },
+  updateCart: () => {},
 });
 
-export default function CartContextProvider({ children }: { children: React.ReactNode }) {
+export default function CartContextProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [cart, setCart] = useState<Cart>({} as Cart);
   const sdk = useSdk();
 
   useEffect(() => {
     async function getCart() {
-      let cart = JSON.parse(localStorage.getItem("cart") as string);
-
-      if (!cart) {
-        cart = await sdk.sapcc.createCart();
-
-        localStorage.setItem("cart", JSON.stringify(cart));
+      let cartId = localStorage.getItem("cartId") ?? "";
+      let cart: Cart;
+      if (!cartId) {
+        const { data } = await sdk.sapcc.createCart({});
+        cart = data;
+      } else {
+        try {
+          const { data } = await sdk.sapcc.getCart({ cartId: cartId });
+          cart = data;
+        } catch {
+          const { data } = await sdk.sapcc.createCart({});
+          cart = data;
+        }
       }
+      localStorage.setItem("cartId", cart.guid ?? "");
+
       setCart(cart);
     }
 
@@ -33,9 +46,11 @@ export default function CartContextProvider({ children }: { children: React.Reac
 
   function updateCart(updatedCart: Cart) {
     setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
   }
 
-  return <CartContext.Provider value={{ cart, updateCart }} > {children} </CartContext.Provider>;
+  return (
+    <CartContext.Provider value={{ cart, updateCart }}>
+      {children}
+    </CartContext.Provider>
+  );
 }
-
