@@ -1,6 +1,20 @@
-"use client";
+import { Endpoints } from "@vsf-enterprise/sapcc-api";
+import { CreateSdkOptions, createSdk } from "@vue-storefront/next";
 
-import { createSdkContext } from "@vue-storefront/next/client";
-import { getSdk } from "./sdk.config";
+const options: CreateSdkOptions = {
+  middleware: {
+    apiUrl: "http://localhost:8181",
+  },
+};
 
-export const [SdkProvider, useSdk] = createSdkContext(getSdk());
+export const { getSdk } = createSdk(
+  options,
+  ({ buildModule, config, middlewareModule, getRequestHeaders }) => ({
+    sapcc: buildModule(middlewareModule<Endpoints>, {
+      apiUrl: config.middlewareUrl + "/sapcc",
+      defaultRequestConfig: {
+        headers: getRequestHeaders(),
+      },
+    }),
+  })
+);
