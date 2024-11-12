@@ -1,41 +1,56 @@
 "use client";
 
+import { useSdk } from "@/hooks/useSdk";
+import { Cart } from "@vsf-enterprise/sap-commerce-webservices-sdk";
 import { createContext, useEffect, useState } from "react";
-import { useSdk } from "../sdk/sdk";
-import { SfCart } from "../types/cart";
 
 export const CartContext = createContext<{
-  cart: SfCart;
-  updateCart: (cart: SfCart) => void;
+  cart: Cart;
+  updateCart: (cart: Cart) => void;
 }>({
-  cart: {} as SfCart,
-  updateCart: () => { },
+  cart: {} as Cart,
+  updateCart: () => {},
 });
 
-export default function CartContextProvider({ children }: { children: React.ReactNode }) {
-  const [cart, setCart] = useState<SfCart>({} as SfCart);
+export default function CartContextProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const [cart, setCart] = useState<Cart>({} as Cart);
   const sdk = useSdk();
 
   useEffect(() => {
     async function getCart() {
-      let cart = JSON.parse(localStorage.getItem("cart") as string);
-
-      if (!cart) {
-        cart = await sdk.unified.getCart({});
-
-        localStorage.setItem("cart", JSON.stringify(cart));
+      let cartId = localStorage.getItem("cartId") ?? "";
+      let cart: Cart;
+      if (!cartId) {
+        const { data } = await sdk.sapcc.createCart({});
+        cart = data;
+      } else {
+        try {
+          const { data } = await sdk.sapcc.getCart({ cartId: cartId });
+          cart = data;
+        } catch {
+          const { data } = await sdk.sapcc.createCart({});
+          cart = data;
+        }
       }
+      localStorage.setItem("cartId", cart.guid ?? "");
+
       setCart(cart);
     }
 
     getCart();
   }, []);
 
-  function updateCart(updatedCart: SfCart) {
+  function updateCart(updatedCart: Cart) {
     setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
   }
 
-  return <CartContext.Provider value={{ cart, updateCart }} > {children} </CartContext.Provider>;
+  return (
+    <CartContext.Provider value={{ cart, updateCart }}>
+      {children}
+    </CartContext.Provider>
+  );
 }
-
