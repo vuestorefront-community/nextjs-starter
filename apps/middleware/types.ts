@@ -1,5 +1,2 @@
-import { WithoutContext } from "@vue-storefront/middleware";
-import { unifiedApiExtension } from "./middleware.config";
-
-export type UnifiedApiExtension = typeof unifiedApiExtension;
-export type UnifiedEndpoints = WithoutContext<UnifiedApiExtension["extendApiMethods"]>;
+export type { Endpoints as UnifiedEndpoints } from "@vsf-enterprise/unified-api-sapcc";
+export * from "@vsf-enterprise/unified-api-sapcc/udl";

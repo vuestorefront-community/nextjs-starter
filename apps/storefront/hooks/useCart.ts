@@ -9,21 +9,18 @@ export default function useCart() {
 
   async function addToCart(product: Product, quantity: number = 1) {
     try {
-      await sdk.sapcc.createCartEntry({
+      await sdk.unified.addCartLineItem({
         cartId: cart.guid as string,
-        orderEntry: {
-          quantity: quantity,
-          product: {
-            code: product.code as string,
-          },
-        },
+        productId: product.code ?? "",
+        sku: product.code ?? "",
+        quantity: 1,
       });
 
-      const { data } = await sdk.sapcc.getCart({
+      const data = await sdk.unified.getCart({
         cartId: cart.guid as string,
       });
 
-      updateCart(data);
+      updateCart(data as any);
     } catch (error) {
       console.error("Error adding to cart", error);
     }

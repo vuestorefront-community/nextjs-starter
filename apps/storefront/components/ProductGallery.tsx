@@ -8,71 +8,15 @@ import {
   type SfScrollableOnDragEndData,
 } from "@storefront-ui/react";
 import classNames from "classnames";
+import { SfProduct } from "middleware/types";
 import { useRef, useState } from "react";
 import { useIntersection } from "react-use";
 
-const withBase = (filepath: string) =>
-  `https://storage.googleapis.com/sfui_docs_artifacts_bucket_public/production/gallery/${filepath}`;
+interface ProductGalleryProps {
+  images: SfProduct["gallery"];
+}
 
-const images = [
-  {
-    imageSrc: withBase("gallery_1.png"),
-    imageThumbSrc: withBase("gallery_1_thumb.png"),
-    alt: "backpack1",
-  },
-  {
-    imageSrc: withBase("gallery_2.png"),
-    imageThumbSrc: withBase("gallery_2_thumb.png"),
-    alt: "backpack2",
-  },
-  {
-    imageSrc: withBase("gallery_3.png"),
-    imageThumbSrc: withBase("gallery_3_thumb.png"),
-    alt: "backpack3",
-  },
-  {
-    imageSrc: withBase("gallery_4.png"),
-    imageThumbSrc: withBase("gallery_4_thumb.png"),
-    alt: "backpack4",
-  },
-  {
-    imageSrc: withBase("gallery_5.png"),
-    imageThumbSrc: withBase("gallery_5_thumb.png"),
-    alt: "backpack5",
-  },
-  {
-    imageSrc: withBase("gallery_6.png"),
-    imageThumbSrc: withBase("gallery_6_thumb.png"),
-    alt: "backpack6",
-  },
-  {
-    imageSrc: withBase("gallery_7.png"),
-    imageThumbSrc: withBase("gallery_7_thumb.png"),
-    alt: "backpack7",
-  },
-  {
-    imageSrc: withBase("gallery_8.png"),
-    imageThumbSrc: withBase("gallery_8_thumb.png"),
-    alt: "backpack8",
-  },
-  {
-    imageSrc: withBase("gallery_9.png"),
-    imageThumbSrc: withBase("gallery_9_thumb.png"),
-    alt: "backpack9",
-  },
-  {
-    imageSrc: withBase("gallery_10.png"),
-    imageThumbSrc: withBase("gallery_10_thumb.png"),
-    alt: "backpack10",
-  },
-  {
-    imageSrc: withBase("gallery_11.png"),
-    imageThumbSrc: withBase("gallery_11_thumb.png"),
-    alt: "backpack11",
-  },
-];
-
-export default function GalleryVertical() {
+export default function GalleryVertical({ images }: ProductGalleryProps) {
   const lastThumbRef = useRef<HTMLButtonElement>(null);
   const thumbsRef = useRef<HTMLDivElement>(null);
   const firstThumbRef = useRef<HTMLButtonElement>(null);
@@ -136,7 +80,7 @@ export default function GalleryVertical() {
           />
         }
       >
-        {images.map(({ imageThumbSrc, alt }, index, thumbsArray) => (
+        {images.map(({ alt, url }, index, thumbsArray) => (
           <button
             // eslint-disable-next-line no-nested-ternary
             ref={
@@ -165,7 +109,7 @@ export default function GalleryVertical() {
               className="border border-neutral-200"
               width="78"
               height="78"
-              src={imageThumbSrc}
+              src={url}
             />
           </button>
         ))}
@@ -180,7 +124,7 @@ export default function GalleryVertical() {
         drag={{ containerWidth: true }}
         onDragEnd={onDragged}
       >
-        {images.map(({ imageSrc, alt }, index) => (
+        {images.map(({ url, alt }, index) => (
           <div
             key={`${alt}-${index}`}
             className="flex justify-center h-full basis-full shrink-0 grow snap-center snap-always"
@@ -190,7 +134,7 @@ export default function GalleryVertical() {
               aria-hidden={activeIndex !== index}
               className="object-contain w-auto h-full"
               alt={alt}
-              src={imageSrc}
+              src={url}
             />
           </div>
         ))}

@@ -1,25 +1,27 @@
 "use client";
+
 import {
-  SfRating,
   SfButton,
-  SfLink,
   SfCounter,
-  SfIconShoppingCart,
+  SfIconAdd,
   SfIconCompareArrows,
   SfIconFavorite,
-  SfIconSell,
   SfIconPackage,
   SfIconRemove,
-  SfIconAdd,
-  SfIconWarehouse,
   SfIconSafetyCheck,
+  SfIconSell,
+  SfIconShoppingCart,
   SfIconShoppingCartCheckout,
-} from '@storefront-ui/react';
-import { useCounter } from 'react-use';
-import { useId, ChangeEvent } from 'react';
-import { clamp } from '@storefront-ui/shared';
-import useCart from '../hooks/useCart';
-import { SfProduct } from '../types/product';
+  SfIconWarehouse,
+  SfLink,
+  SfRating,
+} from "@storefront-ui/react";
+import { clamp } from "@storefront-ui/shared";
+import { ChangeEvent, useId } from "react";
+import { useCounter } from "react-use";
+
+import { SfProduct } from "middleware/types";
+import useCart from "../hooks/useCart";
 
 interface ProductDetailsProps {
   product: SfProduct;
@@ -36,28 +38,35 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
     const nextValue = parseFloat(currentValue);
     set(Number(clamp(nextValue, min, max)));
   }
-
   return (
     <section className="md:max-w-[640px]">
       <div className="inline-flex items-center justify-center text-sm font-medium text-white bg-secondary-600 py-1.5 px-3 mb-4">
         <SfIconSell size="sm" className="mr-1.5" />
         Sale
       </div>
-      <h1 className="mb-1 font-bold typography-headline-4">
-        {product.name}
-      </h1>
-      <strong className="block font-bold typography-headline-3">{product.price?.regularPrice.currency} {product.price?.regularPrice.amount}</strong>
+      <h1 className="mb-1 font-bold typography-headline-4">{product.name}</h1>
+      <strong className="block font-bold typography-headline-3">
+        <strong className="block font-bold typography-headline-3">
+          {product.price?.regularPrice.currency}{" "}
+          {product.price?.regularPrice.amount}
+        </strong>
+      </strong>
       <div className="inline-flex items-center mt-4 mb-2">
-        <SfRating size="xs" value={3} max={5} />
+        <SfRating size="xs" value={product.rating?.average} max={5} />
         <SfCounter className="ml-1" size="xs">
           {product.rating?.count}
         </SfCounter>
-        <SfLink href="#" variant="secondary" className="ml-2 text-xs text-neutral-500">
+        <SfLink
+          href="#"
+          variant="secondary"
+          className="ml-2 text-xs text-neutral-500"
+        >
           {product.rating?.count} reviews
         </SfLink>
       </div>
-      <p className="mb-4 font-normal typography-text-sm"
-        dangerouslySetInnerHTML={{ __html: product.description! }}
+      <p
+        className="mb-4 font-normal typography-text-sm"
+        dangerouslySetInnerHTML={{ __html: product.description ?? "" }}
       />
       <div className="py-4 mb-4 border-gray-200 border-y">
         <div className="bg-primary-100 text-primary-700 flex justify-center gap-1.5 py-1.5 typography-text-sm items-center mb-4 rounded-md">
@@ -103,21 +112,37 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               <strong className="text-neutral-900">{max}</strong> in stock
             </p>
           </div>
-          <SfButton onClick={async () => await addToCart(product, 1)} size="lg" className="w-full xs:ml-4" slotPrefix={<SfIconShoppingCart size="sm" />}>
+          <SfButton
+            onClick={async () => await addToCart(product, 1)}
+            size="lg"
+            className="w-full xs:ml-4"
+            slotPrefix={<SfIconShoppingCart size="sm" />}
+          >
             Add to cart
           </SfButton>
         </div>
         <div className="flex justify-center mt-4 gap-x-4">
-          <SfButton size="sm" variant="tertiary" slotPrefix={<SfIconCompareArrows size="sm" />}>
+          <SfButton
+            size="sm"
+            variant="tertiary"
+            slotPrefix={<SfIconCompareArrows size="sm" />}
+          >
             Compare
           </SfButton>
-          <SfButton size="sm" variant="tertiary" slotPrefix={<SfIconFavorite size="sm" />}>
+          <SfButton
+            size="sm"
+            variant="tertiary"
+            slotPrefix={<SfIconFavorite size="sm" />}
+          >
             Add to list
           </SfButton>
         </div>
       </div>
       <div className="flex first:mt-4">
-        <SfIconPackage size="sm" className="flex-shrink-0 mr-1 text-neutral-500" />
+        <SfIconPackage
+          size="sm"
+          className="flex-shrink-0 mr-1 text-neutral-500"
+        />
         <p className="text-sm">
           Free shipping, arrives by Thu, Apr 7. Want it faster?
           <SfLink href="#" variant="secondary" className="mx-1">
@@ -127,7 +152,10 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         </p>
       </div>
       <div className="flex mt-4">
-        <SfIconWarehouse size="sm" className="flex-shrink-0 mr-1 text-neutral-500" />
+        <SfIconWarehouse
+          size="sm"
+          className="flex-shrink-0 mr-1 text-neutral-500"
+        />
         <p className="text-sm">
           Pickup not available at your shop.
           <SfLink href="#" variant="secondary" className="ml-1">
@@ -136,7 +164,10 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         </p>
       </div>
       <div className="flex mt-4">
-        <SfIconSafetyCheck size="sm" className="flex-shrink-0 mr-1 text-neutral-500" />
+        <SfIconSafetyCheck
+          size="sm"
+          className="flex-shrink-0 mr-1 text-neutral-500"
+        />
         <p className="text-sm">
           Free 30-days returns.
           <SfLink href="#" variant="secondary" className="ml-1">

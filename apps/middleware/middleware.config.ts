@@ -1,28 +1,24 @@
-require('dotenv').config();
-import {
-  Config,
-  Context,
-  createUnifiedExtension,
-  methods,
-  normalizers
-} from "@vsf-enterprise/unified-api-sapcc";
+require("dotenv").config();
+
+import { createUnifiedExtension } from "@vsf-enterprise/unified-api-sapcc";
 import { ApiClientExtension } from "@vue-storefront/middleware";
 
-const apiMethods = methods<typeof normalizers>();
-export const unifiedApiExtension = createUnifiedExtension<Context, Config>()({
-  normalizers,
-  apiMethods,
+export const unifiedApiExtension: ApiClientExtension = createUnifiedExtension({
+  normalizers: {
+    addCustomFields: [{}],
+  },
+  methods: {},
   config: {
     transformImageUrl: (url: string) => {
       return new URL(url, process.env.SAPCC_BASE_URL).toString();
     },
     defaultCurrency: "USD",
-  }
+  },
 });
 
 export const integrations = {
   commerce: {
-    location: '@vsf-enterprise/sapcc-api/server',
+    location: "@vsf-enterprise/sapcc-api/server",
     configuration: {
       OAuth: {
         uri: process.env.SAPCC_OAUTH_URI,
@@ -31,8 +27,8 @@ export const integrations = {
         tokenEndpoint: process.env.SAPCC_OAUTH_TOKEN_ENDPOINT,
         tokenRevokeEndpoint: process.env.SAPCC_OAUTH_TOKEN_REVOKE_ENDPOINT,
         cookieOptions: {
-          'vsf-sap-token': { secure: process.env.NODE_ENV !== 'development' }
-        }
+          "vsf-sap-token": { secure: process.env.NODE_ENV !== "development" },
+        },
       },
       api: {
         uri: process.env.SAPCC_API_URI,
@@ -40,9 +36,12 @@ export const integrations = {
         catalogId: process.env.DEFAULT_CATALOG_ID,
         catalogVersion: process.env.DEFAULT_CATALOG_VERSION,
         defaultLanguage: process.env.DEFAULT_LANGUAGE,
-        defaultCurrency: process.env.DEFAULT_CURRENCY
-      }
+        defaultCurrency: process.env.DEFAULT_CURRENCY,
+      },
     },
-    extensions: (extensions: ApiClientExtension[]) => [...extensions, unifiedApiExtension]
-  }
+    extensions: (extensions: ApiClientExtension[]) => [
+      ...extensions,
+      unifiedApiExtension,
+    ],
+  },
 };
