@@ -11,7 +11,7 @@
   "dependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
-    "@vsf-enterprise/sapcc-api": "^8.2.1",
+    "@vsf-enterprise/sapcc-api": "^9.0.1",
     "@vsf-enterprise/sapcc-types": "^3.0.2",
     "@vue-storefront/middleware": "^5.0.1",
     "consola": "^3.2.3",
