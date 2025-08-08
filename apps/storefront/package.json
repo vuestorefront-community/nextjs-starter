@@ -9,7 +9,8 @@
     "lint": "eslint . --max-warnings 0"
   },
   "dependencies": {
-    "@vue-storefront/next": "^4.2.0",
+    "@vsf-enterprise/sapcc-sdk": "^6.0.0",
+    "@vue-storefront/next": "^6.0.0",
     "next": "^14.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
