@@ -22,6 +22,6 @@
     "packages/*"
   ],
   "dependencies": {
-    "@vsf-enterprise/sap-commerce-webservices-sdk": "^4.0.0"
+    "@vsf-enterprise/sap-commerce-webservices-sdk": "^7.0.0"
   }
 }
